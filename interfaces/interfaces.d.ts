@@ -75,3 +75,11 @@ interface TrendingCardProps {
   movie: TrendingMovie;
   index: number;
 }
+
+ interface FavoriteMovie {
+  $id: string;
+  movie_id: number;
+  title: string;
+  poster_url: string;
+  liked_at: string;
+}

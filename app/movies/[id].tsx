@@ -12,6 +12,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { icons } from "@/constants/icons";
 import useFetch from "@/services/useFetch";
 import { fetchMovieDetails } from "@/services/api";
+import { useEffect, useState } from "react";
+import { isMovieLiked, likeMovie } from "@/services/favorites";
 
 interface MovieInfoProps {
   label: string;
@@ -30,10 +32,21 @@ const MovieInfo = ({ label, value }: MovieInfoProps) => (
 const Details = () => {
   const router = useRouter();
   const { id } = useLocalSearchParams();
+  const [isLiked, setIsLiked] = useState(false);
 
   const { data: movie, loading } = useFetch(() =>
     fetchMovieDetails(id as string)
   );
+
+  useEffect(() => {
+    const checkIfLiked = async () => {
+      if (movie?.id) {
+        const liked = await isMovieLiked(movie.id);
+        setIsLiked(liked);
+      }
+    };
+    checkIfLiked();
+  }, [movie]);
 
   if (loading)
     return (
@@ -53,12 +66,35 @@ const Details = () => {
             className="w-full h-[550px]"
             resizeMode="stretch"
           />
-
-          
         </View>
 
         <View className="flex-col items-start justify-center mt-5 px-5">
-          <Text className="text-white font-bold text-xl">{movie?.title}</Text>
+        <View className="flex-row items-center justify-between w-full mt-2">
+  <Text className="text-white font-bold text-xl flex-1">{movie?.title}</Text>
+
+  {isLiked ? (
+    <Image
+      source={icons.save}
+      className="w-5 h-5 ml-2"
+      tintColor="#22c55e" // vert likeé
+    />
+  ) : (
+    <TouchableOpacity
+      onPress={async () => {
+        if (movie) {
+          await likeMovie(movie);
+          setIsLiked(true);
+        }
+      }}
+    >
+      <Image
+        source={icons.save}
+        className="w-5 h-5 ml-2"
+        tintColor="#fff"
+      />
+    </TouchableOpacity>
+  )}
+</View>
           <View className="flex-row items-center gap-x-1 mt-2">
             <Text className="text-light-200 text-sm">
               {movie?.release_date?.split("-")[0]} •
