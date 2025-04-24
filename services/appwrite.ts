@@ -1,4 +1,4 @@
-import { Client, Databases, ID, Query } from "react-native-appwrite";
+import { Client, Databases, ID, Query, Account } from "appwrite";
 
 const DATABASE_ID = process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!;
 const COLLECTION_ID = process.env.EXPO_PUBLIC_APPWRITE_COLLECTION_ID!;
@@ -9,10 +9,12 @@ const client = new Client()
 
 const database = new Databases(client);
 
+const account = new Account(client);
+
 export const updateSearchCount = async (query: string, movie: Movie) => {
   try {
     const result = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
-      Query.equal("movie_id", movie.id)
+      Query.equal("movie_id", movie.id),
     ]);
 
     if (result.documents.length > 0) {
@@ -55,3 +57,5 @@ export const getTrendingMovies = async (): Promise<
     return undefined;
   }
 };
+
+export { account, ID };

@@ -1,30 +1,29 @@
 import { Stack } from "expo-router";
 import "./globals.css";
 import { StatusBar } from "react-native";
-import { useEffect } from "react";
+import { AuthProvider } from "@/context/AuthContext";
+import { useRedirect } from "@/hooks/useRedirect";
 
-export default function RootLayout() {
+function RootLayoutNav() {
+  useRedirect(); // 🔁 redirection logique
 
   return (
-
-
     <>
-      <StatusBar hidden={true} />
-
+      <StatusBar hidden />
       <Stack>
-        <Stack.Screen
-          name="(tabs)"
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="movies/[id]"
-          options={{
-            headerShown: false,
-          }}
-        />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)/login" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)/register" options={{ headerShown: false }} />
+        <Stack.Screen name="movies/[id]" options={{ headerShown: false }} />
       </Stack>
     </>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <AuthProvider>
+      <RootLayoutNav />
+    </AuthProvider>
   );
 }
