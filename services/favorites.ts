@@ -44,7 +44,6 @@ export const isMovieLiked = async (movieId: number) => {
   try {
     const user = await account.get();
     if (!user) throw new Error("User not authenticated");
-    console.log("USER:", user);
 
     const res = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
       Query.equal("movie_id", movieId),
@@ -71,5 +70,14 @@ export const getUserFavorites = async () => {
     console.error("Erreur lors de la récupération des favoris :", error);
 
     return [];
+  }
+};
+
+export const deleteFavorite = async (favoriteId: string) => {
+  try {
+    await database.deleteDocument(DATABASE_ID, COLLECTION_ID, favoriteId);
+  } catch (error) {
+    console.error("Erreur lors de la suppression du favori :", error);
+    throw error;
   }
 };

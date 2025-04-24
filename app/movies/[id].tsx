@@ -14,6 +14,7 @@ import useFetch from "@/services/useFetch";
 import { fetchMovieDetails } from "@/services/api";
 import { useEffect, useState } from "react";
 import { isMovieLiked, likeMovie } from "@/services/favorites";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface MovieInfoProps {
   label: string;
@@ -33,10 +34,19 @@ const Details = () => {
   const router = useRouter();
   const { id } = useLocalSearchParams();
   const [isLiked, setIsLiked] = useState(false);
+  const queryClient = useQueryClient();
 
   const { data: movie, loading } = useFetch(() =>
     fetchMovieDetails(id as string)
   );
+
+  const { mutate: handleLikeMovie, isPending } = useMutation({
+    mutationFn: likeMovie,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["favorites"] });
+      setIsLiked(true);
+    },
+  });
 
   useEffect(() => {
     const checkIfLiked = async () => {
@@ -69,32 +79,31 @@ const Details = () => {
         </View>
 
         <View className="flex-col items-start justify-center mt-5 px-5">
-        <View className="flex-row items-center justify-between w-full mt-2">
-  <Text className="text-white font-bold text-xl flex-1">{movie?.title}</Text>
+          <View className="flex-row items-center justify-between w-full mt-2">
+            <Text className="text-white font-bold text-xl flex-1">
+              {movie?.title}
+            </Text>
 
-  {isLiked ? (
-    <Image
-      source={icons.save}
-      className="w-5 h-5 ml-2"
-      tintColor="#22c55e" // vert likeé
-    />
-  ) : (
-    <TouchableOpacity
-      onPress={async () => {
-        if (movie) {
-          await likeMovie(movie);
-          setIsLiked(true);
-        }
-      }}
-    >
-      <Image
-        source={icons.save}
-        className="w-5 h-5 ml-2"
-        tintColor="#fff"
-      />
-    </TouchableOpacity>
-  )}
-</View>
+            {isLiked ? (
+              <Image
+                source={icons.save}
+                className="w-5 h-5 ml-2"
+                tintColor="#22c55e"
+              />
+            ) : (
+              <TouchableOpacity
+                onPress={() => movie && handleLikeMovie(movie)}
+                disabled={isPending}
+              >
+                <Image
+                  source={icons.save}
+                  className="w-5 h-5 ml-2"
+                  tintColor={isPending ? "#888" : "#fff"}
+                />
+              </TouchableOpacity>
+            )}
+          </View>
+
           <View className="flex-row items-center gap-x-1 mt-2">
             <Text className="text-light-200 text-sm">
               {movie?.release_date?.split("-")[0]} •
@@ -104,11 +113,9 @@ const Details = () => {
 
           <View className="flex-row items-center bg-dark-100 px-2 py-1 rounded-md gap-x-1 mt-2">
             <Image source={icons.star} className="size-4" />
-
             <Text className="text-white font-bold text-sm">
               {Math.round(movie?.vote_average ?? 0)}/10
             </Text>
-
             <Text className="text-light-200 text-sm">
               ({movie?.vote_count} votes)
             </Text>
@@ -127,9 +134,7 @@ const Details = () => {
             />
             <MovieInfo
               label="Revenue"
-              value={`$${Math.round(
-                (movie?.revenue ?? 0) / 1_000_000
-              )} million`}
+              value={`$${Math.round((movie?.revenue ?? 0) / 1_000_000)} million`}
             />
           </View>
 

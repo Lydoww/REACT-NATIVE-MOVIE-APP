@@ -9,20 +9,38 @@ import {
 import React from "react";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
-import { getUserFavorites } from "@/services/favorites";
-import useFetch from "@/services/useFetch";
+import { getUserFavorites, deleteFavorite } from "@/services/favorites";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 
 const Saved = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const {
     data: favorites,
-    loading,
+    isLoading,
+    isError,
     error,
-  } = useFetch<FavoriteMovie[]>(getUserFavorites);
+  } = useQuery({
+    queryKey: ["favorites"],
+    queryFn: getUserFavorites,
+  });
 
-  if (loading) {
+  const { mutate: removeFavorite } = useMutation({
+    mutationFn: deleteFavorite,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["favorites"] });
+    },
+  });
+
+  const handleDeleteFavorite = (id: string) => {
+    removeFavorite(id);
+  };
+
+  if (isLoading) {
     return (
       <View className="bg-primary flex-1 justify-center items-center">
         <ActivityIndicator size="large" color="#fff" />
@@ -30,7 +48,7 @@ const Saved = () => {
     );
   }
 
-  if (error) {
+  if (isError && error) {
     return (
       <View className="bg-primary flex-1 justify-center items-center px-5">
         <Text className="text-red-500 text-center">
@@ -78,23 +96,35 @@ const Saved = () => {
         }}
         contentContainerStyle={{ paddingBottom: 100 }}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => router.push(`/movies/${item.movie_id}`)}
-            className="w-[47%]"
-          >
-            <Image
-              source={{ uri: item.poster_url }}
-              className="w-full rounded-lg"
-              style={{ aspectRatio: 2 / 3 }}
-              resizeMode="cover"
-            />
-            <Text
-              className="text-white text-sm font-semibold mt-3" // ➕ plus de marge ici
-              numberOfLines={2}
+          <View className="w-[47%] relative">
+            <TouchableOpacity
+              onPress={() => handleDeleteFavorite(item.$id)}
+              className="absolute top-2 right-2 z-10 bg-dark-100 p-1 rounded-full"
             >
-              {item.title}
-            </Text>
-          </TouchableOpacity>
+              <Image
+                source={icons.trash}
+                className="w-4 h-4"
+                tintColor="#FFF"
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => router.push(`/movies/${item.movie_id}`)}
+            >
+              <Image
+                source={{ uri: item.poster_url }}
+                className="w-full rounded-lg"
+                style={{ aspectRatio: 2 / 3 }}
+                resizeMode="cover"
+              />
+              <Text
+                className="text-white text-sm font-semibold mt-3"
+                numberOfLines={2}
+              >
+                {item.title}
+              </Text>
+            </TouchableOpacity>
+          </View>
         )}
       />
     </View>

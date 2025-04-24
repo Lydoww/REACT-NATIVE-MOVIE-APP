@@ -3,9 +3,12 @@ import "./globals.css";
 import { StatusBar } from "react-native";
 import { AuthProvider } from "@/context/AuthContext";
 import { useRedirect } from "@/hooks/useRedirect";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 function RootLayoutNav() {
-  useRedirect(); // 🔁 redirection logique
+  useRedirect();
 
   return (
     <>
@@ -22,8 +25,10 @@ function RootLayoutNav() {
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <RootLayoutNav />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <RootLayoutNav />
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
