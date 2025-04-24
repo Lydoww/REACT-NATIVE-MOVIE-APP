@@ -19,7 +19,8 @@
     },
     "androidNavigationBar": {
       "backgroundColor": "#00000000",
-      "barStyle": "dark-content"
+      "barStyle": "dark-content",
+      "visible": "immersive"
     },
 
     "android": {
