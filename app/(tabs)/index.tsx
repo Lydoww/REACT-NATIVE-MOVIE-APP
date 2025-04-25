@@ -15,15 +15,19 @@ import { fetchMovies } from "@/services/api";
 import MovieCard from "@/components/MovieCard";
 import { getTrendingMovies } from "@/services/appwrite";
 import TrendingCard from "@/components/TrendingCard";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Index() {
   const router = useRouter();
 
   const {
     data: trendingMovies,
-    loading: trendingLoading,
+    isLoading: trendingLoading,
     error: trendingError,
-  } = useFetch(getTrendingMovies);
+  } = useQuery({
+    queryKey: ["trendingMovies"],
+    queryFn: getTrendingMovies,
+  });
 
   const {
     data: movies,

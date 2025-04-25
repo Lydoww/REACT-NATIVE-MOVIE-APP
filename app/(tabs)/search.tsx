@@ -6,10 +6,10 @@ import { icons } from "@/constants/icons";
 
 import useFetch from "@/services/useFetch";
 import { fetchMovies } from "@/services/api";
-import { updateSearchCount } from "@/services/appwrite";
 
 import SearchBar from "@/components/SearchBar";
 import MovieDisplayCard from "@/components/MovieCard";
+import { useUpdateSearchCount } from "@/hooks/useUpdateSearchCount";
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -21,6 +21,8 @@ const Search = () => {
     refetch: loadMovies,
     reset,
   } = useFetch(() => fetchMovies({ query: searchQuery }), false);
+
+  const { mutate: updateSearch } = useUpdateSearchCount();
 
   const handleSearch = (text: string) => {
     setSearchQuery(text);
@@ -40,8 +42,8 @@ const Search = () => {
   }, [searchQuery]);
 
   useEffect(() => {
-    if (movies?.length! > 0 && movies?.[0]) {
-      updateSearchCount(searchQuery, movies[0]);
+    if (movies?.length > 0 && movies[0]) {
+      updateSearch({ query: searchQuery, movie: movies[0] });
     }
   }, [movies]);
 
@@ -93,15 +95,12 @@ const Search = () => {
               </Text>
             )}
 
-            {!loading &&
-              !error &&
-              searchQuery.trim() &&
-              movies?.length! > 0 && (
-                <Text className="text-xl text-white font-bold">
-                  Search Results for{" "}
-                  <Text className="text-accent">{searchQuery}</Text>
-                </Text>
-              )}
+            {!loading && !error && searchQuery.trim() && movies?.length > 0 && (
+              <Text className="text-xl text-white font-bold">
+                Search Results for{" "}
+                <Text className="text-accent">{searchQuery}</Text>
+              </Text>
+            )}
           </>
         }
         ListEmptyComponent={

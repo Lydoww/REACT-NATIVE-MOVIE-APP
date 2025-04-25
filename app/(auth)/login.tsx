@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { useAuth } from "@/context/AuthContext";
 import { router } from "expo-router";
+import PasswordInput from "@/components/PasswordInput";
 
 export default function LoginScreen() {
   const { signin } = useAuth();
@@ -50,18 +51,7 @@ export default function LoginScreen() {
         value={email}
       />
 
-      <TextInput
-        placeholder="Password"
-        secureTextEntry
-        style={{
-          borderWidth: 1,
-          padding: 12,
-          marginBottom: 12,
-          borderRadius: 8,
-        }}
-        onChangeText={setPassword}
-        value={password}
-      />
+      <PasswordInput value={password} onChangeText={setPassword} />
 
       {error !== "" && (
         <Text style={{ color: "red", marginBottom: 12 }}>{error}</Text>

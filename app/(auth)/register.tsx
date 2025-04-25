@@ -9,6 +9,7 @@ import {
 import { ID, account } from "@/services/appwrite";
 import { useAuth } from "@/context/AuthContext";
 import { router } from "expo-router";
+import PasswordInput from "@/components/PasswordInput";
 
 export default function RegisterScreen() {
   const { signin } = useAuth();
@@ -67,18 +68,7 @@ export default function RegisterScreen() {
         onChangeText={setEmail}
       />
 
-      <TextInput
-        placeholder="Password"
-        secureTextEntry
-        style={{
-          borderWidth: 1,
-          padding: 12,
-          marginBottom: 12,
-          borderRadius: 8,
-        }}
-        value={password}
-        onChangeText={setPassword}
-      />
+      <PasswordInput value={password} onChangeText={setPassword}/>
 
       {error !== "" && (
         <Text style={{ color: "red", marginBottom: 12 }}>{error}</Text>
