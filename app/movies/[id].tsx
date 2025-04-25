@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 import { icons } from "@/constants/icons";
 import useFetch from "@/services/useFetch";
 import { fetchMovieDetails } from "@/services/api";
@@ -134,7 +133,9 @@ const Details = () => {
             />
             <MovieInfo
               label="Revenue"
-              value={`$${Math.round((movie?.revenue ?? 0) / 1_000_000)} million`}
+              value={`$${Math.round(
+                (movie?.revenue ?? 0) / 1_000_000
+              )} million`}
             />
           </View>
 

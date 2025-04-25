@@ -87,7 +87,7 @@ const _layout = () => {
           headerShown: false,
           tabBarIcon: ({ focused }) => (
             <TabIcon focused={focused} icon={icons.person} title={"Profile"} />
-          ),
+          )
         }}
       />
     </Tabs>
