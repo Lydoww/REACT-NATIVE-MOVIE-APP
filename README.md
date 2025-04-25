@@ -29,7 +29,9 @@ It allows users to browse popular movies, search for specific titles, and save f
 
 ## 🧪 Demo
 
-> A short video demo will showcase login, movie search, adding/removing favorites, and the trending logic in action.
+
+Uploading flickflow.mp4…
+
 
 ---
 
