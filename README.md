@@ -1,50 +1,58 @@
-# Welcome to your Expo app 👋
+# 🎬 FlickFlow
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**FlickFlow** is a mobile movie library application built with **React Native** and **Expo Go**, powered by **Appwrite** and the **TMDB API**.
 
-## Get started
+It allows users to browse popular movies, search for specific titles, and save favorites to their personal account. FlickFlow is designed to be simple, clean, and efficient — a personal project to showcase mobile development skills.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## 🚀 Features
 
-2. Start the app
+- 🔐 **Authentication** (Sign up / Login) with Appwrite  
+- 🆕 **Latest Movies** – Browse newly released content from TMDB  
+- 🔎 **Search** – Full search functionality across the TMDB movie database  
+- ⭐ **Favorites** – Add/remove favorite movies tied to each authenticated user  
+- 📈 **Trending** – Displays a top 5 of the most searched movies globally (aggregated from all users)  
+- 👤 **User Profile** – Displays user email and name, shows number of favorite movies, and allows logout  
 
-   ```bash
-    npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## 📱 Tech Stack
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- **Frontend**: React Native with Expo Go  
+- **Backend**: Appwrite (Auth + Database)  
+- **API**: [The Movie Database (TMDB)](https://www.themoviedb.org/)  
+- **State Management**: TanStack Query  
+- **Styling**: NativeWind (Tailwind CSS for React Native)  
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+---
 
-## Get a fresh project
+## 🧪 Demo
 
-When you're ready, run:
+> A short video demo will showcase login, movie search, adding/removing favorites, and the trending logic in action.
 
-```bash
-npm run reset-project
-```
+---
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 📚 Future Improvements
 
-## Learn more
+- Genre-based filtering  
+- Trending logic with decay over time  
+- Multilingual support  
+- UI/UX polishing with better transitions  
 
-To learn more about developing your project with Expo, look at the following resources:
+---
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## 🙌 Credits
 
-## Join the community
+- [TMDB API](https://www.themoviedb.org/documentation/api)  
+- [Appwrite](https://appwrite.io/)  
+- [TanStack Query](https://tanstack.com/query/latest)  
+- [NativeWind](https://www.nativewind.dev/)  
 
-Join our community of developers creating universal apps.
+---
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 🧑‍💻 Author
+
+**Alexis Helm**  
+Full-Stack Developer – React | Typescript | Node.Js  
+[LinkedIn](https://www.linkedin.com/in/alexis-helm/)
